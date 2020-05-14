@@ -77,6 +77,10 @@ ul {
   flex-direction: column-reverse;
 }
 
+.--highlight {
+  background-color: wheat;
+}
+
 .--active {
   font-weight: bold;
 }

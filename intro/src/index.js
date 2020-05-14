@@ -2,37 +2,35 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-class OrderedList extends React.Component {
-  render() {
-    const isReversed = this.props.isMoveReverse
-      ? "game-info__moves --reverse"
-      : "game-info__moves";
-    return <ol className={isReversed}> {this.props.movesList} </ol>;
-  }
+function OrderedList(props) {
+  const isReversed = props.isMoveReverse
+    ? "game-info__moves --reverse"
+    : "game-info__moves";
+
+  return <ol className={isReversed}> {props.movesList} </ol>;
 }
 
-class Toggle extends React.Component {
-  render() {
-    const toggleClass = this.props.isMoveReverse
-      ? "game-info__toggle-btn --active"
-      : "game-info__toggle-btn";
-    return (
-      <button
-        className={toggleClass}
-        onClick={() => {
-          this.props.onClick();
-        }}
-      >
-        Toggle Move List Order
-      </button>
-    );
-  }
+function Toggle(props) {
+  const toggleClass = props.isMoveReverse
+    ? "game-info__toggle-btn --active"
+    : "game-info__toggle-btn";
+
+  return (
+    <button
+      className={toggleClass}
+      onClick={() => {
+        props.onClick();
+      }}
+    >
+      Toggle Move List Order
+    </button>
+  );
 }
 
 function Square(props) {
   return (
     <button
-      className='square'
+      className={props.className}
       onClick={() => {
         props.onClick();
       }}
@@ -44,8 +42,12 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
+    const [a, b, c] = this.props.winningLine;
+    const highlight =
+      i === a || i === b || i === c ? "square --highlight" : "square";
     return (
       <Square
+        className={highlight}
         key={i}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
@@ -56,6 +58,7 @@ class Board extends React.Component {
   render() {
     const squares = [];
     let squareNum = 0;
+
     for (let i = 0; i < this.props.boardDimension; i++) {
       const row = [];
       for (let j = 0; j < this.props.boardDimension; j++) {
@@ -173,7 +176,7 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = "Winner: " + winner;
+      status = "Winner: " + winner.player;
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -182,6 +185,7 @@ class Game extends React.Component {
       <div className='game'>
         <div className='game-board'>
           <Board
+            winningLine={winner ? winner.line : [null, null, null]}
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
             boardDimension={this.state.boardDimension}
@@ -220,7 +224,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return { player: squares[a], line: lines[i] };
     }
   }
 
