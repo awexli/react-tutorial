@@ -55,21 +55,32 @@ class Game extends React.Component {
           squares: Array(9).fill(null),
         },
       ],
-      coordinates: {
-        0: "[0,0]",
-        1: "[1,0]",
-        2: "[2,0]",
-        3: "[0,1]",
-        4: "[1,1]",
-        5: "[2,1]",
-        6: "[0,2]",
-        7: "[1,2]",
-        8: "[2,2]",
-      },
+      coordinates: {},
       stepNumber: 0,
       xIsNext: true,
-      isActive: false,
     };
+  }
+
+  componentDidMount() {
+    this.populateCoordinate();
+  }
+
+  populateCoordinate() {
+    const boardDimension = 3;
+    const totalSquares = boardDimension * boardDimension;
+    const coordinates = {};
+    let row = 0;
+    let column = 0;
+
+    for (let squareNum = 0; squareNum < totalSquares; squareNum++) {
+      coordinates[squareNum] = `[${column++},${row}]`;
+      column = column % 3;
+      row = column === 0 ? row + 1 : row;
+    }
+
+    this.setState({
+      coordinates: coordinates,
+    });
   }
 
   handleClick(i) {
@@ -77,8 +88,6 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    // calculateWinner(squares) & squares[i] return true
-    // if they hold "X" or "O", and false if they hold null
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
