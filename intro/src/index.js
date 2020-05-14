@@ -2,6 +2,33 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
+class OrderedList extends React.Component {
+  render() {
+    const isReversed = this.props.isMoveReverse
+      ? "game-info__moves --reverse"
+      : "game-info__moves";
+    return <ol className={isReversed}> {this.props.movesList} </ol>;
+  }
+}
+
+class Toggle extends React.Component {
+  render() {
+    const toggleClass = this.props.isMoveReverse
+      ? "game-info__toggle-btn --active"
+      : "game-info__toggle-btn";
+    return (
+      <button
+        className={toggleClass}
+        onClick={() => {
+          this.props.onClick();
+        }}
+      >
+        Toggle Move List Order
+      </button>
+    );
+  }
+}
+
 function Square(props) {
   return (
     <button
@@ -27,12 +54,11 @@ class Board extends React.Component {
   }
 
   render() {
-    const boardDimension = 3;
     const squares = [];
     let squareNum = 0;
-    for (let i = 0; i < boardDimension; i++) {
+    for (let i = 0; i < this.props.boardDimension; i++) {
       const row = [];
-      for (let j = 0; j < boardDimension; j++) {
+      for (let j = 0; j < this.props.boardDimension; j++) {
         row.push(this.renderSquare(squareNum++));
       }
       squares.push(
@@ -49,6 +75,7 @@ class Board extends React.Component {
 class Game extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       history: [
         {
@@ -57,7 +84,9 @@ class Game extends React.Component {
       ],
       coordinates: {},
       stepNumber: 0,
+      boardDimension: 3,
       xIsNext: true,
+      isMoveReverse: false,
     };
   }
 
@@ -66,15 +95,15 @@ class Game extends React.Component {
   }
 
   populateCoordinate() {
-    const boardDimension = 3;
-    const totalSquares = boardDimension * boardDimension;
+    const dimensions = this.state.boardDimension;
+    const totalSquares = dimensions * dimensions;
     const coordinates = {};
     let row = 0;
     let column = 0;
 
     for (let squareNum = 0; squareNum < totalSquares; squareNum++) {
       coordinates[squareNum] = `[${column++},${row}]`;
-      column = column % 3;
+      column = column % dimensions;
       row = column === 0 ? row + 1 : row;
     }
 
@@ -106,6 +135,12 @@ class Game extends React.Component {
     });
   }
 
+  handleToggle() {
+    this.setState({
+      isMoveReverse: !this.state.isMoveReverse,
+    });
+  }
+
   jumpTo(step) {
     this.setState({
       stepNumber: step,
@@ -127,7 +162,7 @@ class Game extends React.Component {
       return (
         <li key={move}>
           <button
-            className={move === stepNumber ? "move-list active" : "move-list"}
+            className={move === stepNumber ? "move-list --active" : "move-list"}
             onClick={() => this.jumpTo(move)}
           >
             {desc}
@@ -149,11 +184,21 @@ class Game extends React.Component {
           <Board
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
+            boardDimension={this.state.boardDimension}
           />
         </div>
         <div className='game-info'>
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <Toggle
+            isMoveReverse={this.state.isMoveReverse}
+            onClick={() => {
+              this.handleToggle();
+            }}
+          />
+          <OrderedList
+            isMoveReverse={this.state.isMoveReverse}
+            movesList={moves}
+          />
         </div>
       </div>
     );

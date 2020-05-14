@@ -64,6 +64,19 @@ ul {
   height: 300px;
 }
 
-.active {
+.game-info__toggle-btn {
+  margin-top: 8px;
+}
+
+.game-info__moves {
+  display: block;
+}
+
+.game-info__moves.--reverse {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.--active {
   font-weight: bold;
 }
