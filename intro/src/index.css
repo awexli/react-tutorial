@@ -63,3 +63,7 @@ ul {
   margin-left: 20px;
   height: 300px;
 }
+
+.active {
+  font-weight: bold;
+}
