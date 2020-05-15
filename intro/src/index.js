@@ -22,7 +22,7 @@ function Toggle(props) {
         props.onClick();
       }}
     >
-      Toggle Move List Order
+      Descending Order
     </button>
   );
 }
@@ -42,9 +42,10 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
-    const [a, b, c] = this.props.winningLine;
     const highlight =
-      i === a || i === b || i === c ? "square --highlight" : "square";
+      this.props.winningLine && this.props.winningLine.includes(i)
+        ? "square --highlight"
+        : "square";
     return (
       <Square
         className={highlight}
@@ -156,7 +157,6 @@ class Game extends React.Component {
     const stepNumber = this.state.stepNumber;
     const current = history[stepNumber];
     const winner = calculateWinner(current.squares);
-
     const moves = history.map((step, move) => {
       const cell = step.lastSquare;
       const desc = move
@@ -177,6 +177,8 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = "Winner: " + winner.player;
+    } else if (stepNumber === 9) {
+      status = "Draw!";
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -185,7 +187,7 @@ class Game extends React.Component {
       <div className='game'>
         <div className='game-board'>
           <Board
-            winningLine={winner ? winner.line : [null, null, null]}
+            winningLine={winner ? winner.line : null}
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
             boardDimension={this.state.boardDimension}

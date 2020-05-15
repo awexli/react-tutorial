@@ -10,11 +10,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #1e202a;
+  color: white;
+}
+
+@media screen and (max-width: 414px) {
+  body {
+    align-items: initial;
+    padding-top: 2em;
+  }
 }
 
 ol,
 ul {
   padding-left: 30px;
+}
+
+button {
+  cursor: pointer;
 }
 
 #root {
@@ -32,7 +45,7 @@ ul {
 }
 
 .square {
-  background: #fff;
+  background: #1e202a;
   border: 1px solid #999;
   float: left;
   font-size: 24px;
@@ -44,6 +57,7 @@ ul {
   padding: 0;
   text-align: center;
   width: 34px;
+  color: hsl(228, 34%, 66%);
 }
 
 .square:focus {
@@ -56,12 +70,20 @@ ul {
 
 .game {
   display: flex;
-  flex-direction: row;
+  justify-content: center;
 }
 
 .game-info {
   margin-left: 20px;
-  height: 300px;
+}
+
+.game-info button {
+  border-style: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: #252a41;
+  color: hsl(228, 34%, 66%);
+  padding: 8px;
 }
 
 .game-info__toggle-btn {
@@ -72,15 +94,19 @@ ul {
   display: block;
 }
 
+.game-info__moves li {
+  padding: 4px;
+}
+
 .game-info__moves.--reverse {
   display: flex;
   flex-direction: column-reverse;
 }
 
 .--highlight {
-  background-color: wheat;
+  background-color: white;
 }
 
-.--active {
-  font-weight: bold;
+.game-info .--active {
+  color: white;
 }
