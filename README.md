@@ -10,6 +10,9 @@ Intro to React tutorial with my solutions to the following improvements:
 
 Solution can be found in `intro/src/index.js`
 
+![example_1](https://tinyurl.com/ybg5g295)
+![example_2](https://tinyurl.com/y7m9bnny)
+
 ## Usage
 ```
 git clone https://github.com/awexli/react-tutorial.git
