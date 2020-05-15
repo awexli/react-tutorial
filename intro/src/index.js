@@ -30,6 +30,7 @@ function Toggle(props) {
 function Square(props) {
   return (
     <button
+      aria-label='square'
       className={props.className}
       onClick={() => {
         props.onClick();

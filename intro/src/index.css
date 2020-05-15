@@ -23,7 +23,7 @@ body {
 
 ol,
 ul {
-  padding-left: 30px;
+  padding-left: 18px;
 }
 
 button {
@@ -32,6 +32,7 @@ button {
 
 #root {
   width: 310px;
+  height: 568px;
 }
 
 .board-row:after {
@@ -103,10 +104,14 @@ button {
   flex-direction: column-reverse;
 }
 
-.--highlight {
-  background-color: white;
-}
-
 .game-info .--active {
   color: white;
+}
+
+.move-list {
+  width: 135px;
+}
+
+.--highlight {
+  background-color: white;
 }
